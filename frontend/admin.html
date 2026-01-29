@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-page">
+
+<div class="dashboard-box">
+  <h2>Admin Dashboard</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Feedback</th>
+        <th>Sentiment</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <canvas id="chart"></canvas>
+</div>
+
+<script>
+async function loadData() {
+  const token = localStorage.getItem("token");
+
+  const res = await fetch("http://localhost:5000/api/admin/feedbacks", {
+    headers: { Authorization: token }
+  });
+
+  const data = await res.json();
+  let p=0,n=0,neu=0;
+
+  data.forEach(f => {
+    tableBody.innerHTML += `
+      <tr>
+        <td>${f.username}</td>
+        <td>${f.message}</td>
+        <td>${f.sentiment}</td>
+        <td>${new Date(f.timestamp).toLocaleString()}</td>
+      </tr>
+    `;
+
+    if (f.sentiment==="Positive") p++;
+    if (f.sentiment==="Negative") n++;
+    if (f.sentiment==="Neutral") neu++;
+  });
+
+  new Chart(chart, {
+    type: "pie",
+    data: {
+      labels: ["Positive","Negative","Neutral"],
+      datasets: [{
+        data: [p,n,neu],
+        backgroundColor:["#38a169","#e53e3e","#718096"]
+      }]
+    }
+  });
+}
+
+loadData();
+</script>
+
+</body>
+</html>

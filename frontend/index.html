@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feedback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+  <h2>Submit Feedback</h2>
+
+  <textarea id="msg" placeholder="Enter your feedback"></textarea>
+  <button onclick="send()">Submit</button>
+
+  <p id="out"></p>
+</div>
+
+<script>
+const user = JSON.parse(localStorage.getItem("user"));
+
+async function send() {
+  const res = await fetch("http://localhost:5000/api/feedback", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      message: msg.value,
+      username: user.username,
+      user_id: user.user_id
+    })
+  });
+
+  const data = await res.json();
+  out.innerText = "Sentiment: " + data.sentiment;
+  msg.value = "";
+}
+</script>
+
+</body>
+</html>

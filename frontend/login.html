@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+  <h2>User Login</h2>
+
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div class="link">
+    <a href="register.html">Create new account</a>
+  </div>
+</div>
+
+<script>
+async function login() {
+  const res = await fetch("http://localhost:5000/api/login", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.role === "user") {
+    localStorage.setItem("user", JSON.stringify(data));
+    window.location.href = "index.html";
+  } else {
+    alert("Invalid user");
+  }
+}
+</script>
+
+</body>
+</html>
