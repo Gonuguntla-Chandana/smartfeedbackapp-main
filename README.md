@@ -46,9 +46,10 @@ npm install
 
 Configure .env file:
 
-MONGO_URI=your_mongodb_connection_string
+Admin Email
+Admin Password
 SECRET_KEY=your_secret_key
-PORT=3000
+PORT=5000
 
 
 If using MongoDB Atlas, copy the connection string from your Atlas dashboard.
@@ -65,7 +66,7 @@ nodemon server.js
 
 You should see:
 
-Server running on port 3000
+Server running on port 5000
 
 3. Frontend Setup
 
@@ -80,7 +81,7 @@ Right-click index.html → Open with Live Server
 
 Make sure frontend forms point to the correct backend URL:
 
-http://localhost:3000/
+http://localhost:5000/
 
 4. Using the System
 User Actions
